@@ -1,0 +1,13 @@
+ $contrl coord=fragonly $end
+ $system mwords=300 $end
+ $efrag
+ ISCRELEC=1
+ FRAGNAME=fnumber1
+ A01C xcrd ycrd zcrd
+ A02C xcrd ycrd zcrd
+ A03C xcrd ycrd zcrd
+ FRAGNAME=fnumber2
+ A01C xcrd ycrd zcrd
+ A02C xcrd ycrd zcrdd
+ A03C xcrd ycrd zcrd
+ $end

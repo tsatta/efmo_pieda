@@ -1,0 +1,84 @@
+Lmod Warning:
+-------------------------------------------------------------------------------
+The following dependent module(s) are not currently loaded:
+compiler/GCCcore/14.3.0 (required by: lib/zlib/1.3.1-GCCcore-14.3.0,
+lib/libidn2/2.3.8-GCCcore-14.3.0, lib/libiconv/1.18-GCCcore-14.3.0,
+lib/libunistring/1.3-GCCcore-14.3.0, lib/libpsl/0.21.5-GCCcore-14.3.0,
+tools/cURL/8.14.1-GCCcore-14.3.0, tools/expat/2.7.1-GCCcore-14.3.0,
+tools/XZ/5.8.1-GCCcore-14.3.0, lib/libxml2/2.14.3-GCCcore-14.3.0,
+tools/gettext/0.25-GCCcore-14.3.0, lang/Perl/5.40.2-GCCcore-14.3.0,
+tools/git/2.50.1-GCCcore-14.3.0), devel/ncurses/6.5-GCCcore-14.3.0 (required
+by: tools/gettext/0.25-GCCcore-14.3.0)
+-------------------------------------------------------------------------------
+
+
+
+
+The following have been reloaded with a version change:
+  1) compiler/GCCcore/12.2.0 => compiler/GCCcore/12.3.0
+  2) devel/ncurses/6.3-GCCcore-12.2.0 => devel/ncurses/6.4-GCCcore-12.3.0
+  3) lib/libxml2/2.10.3-GCCcore-12.2.0 => lib/libxml2/2.14.3-GCCcore-14.3.0
+  4) lib/zlib/1.2.12-GCCcore-12.2.0 => lib/zlib/1.3.1-GCCcore-14.3.0
+  5) system/OpenSSL/1.1 => system/OpenSSL/3
+  6) tools/XZ/5.2.7-GCCcore-12.2.0 => tools/XZ/5.8.1-GCCcore-14.3.0
+  7) tools/cURL/7.86.0-GCCcore-12.2.0 => tools/cURL/8.14.1-GCCcore-14.3.0
+
+2i0d_ad_74_FMO2DFTB4H_SPE_rank1.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank1.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+2i0d_ad_74_FMO2DFTB4H_SPE_rank10.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank10.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+2i0d_ad_74_FMO2DFTB4H_SPE_rank11.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank11.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+2i0d_ad_74_FMO2DFTB4H_SPE_rank12.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank12.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+2i0d_ad_74_FMO2DFTB4H_SPE_rank13.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank13.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+2i0d_ad_74_FMO2DFTB4H_SPE_rank14.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank14.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+2i0d_ad_74_FMO2DFTB4H_SPE_rank15.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank15.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+2i0d_ad_74_FMO2DFTB4H_SPE_rank16.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank16.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+2i0d_ad_74_FMO2DFTB4H_SPE_rank17.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank17.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+2i0d_ad_74_FMO2DFTB4H_SPE_rank18.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank18.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+srun: Job 12954283 step creation temporarily disabled, retrying (Requested nodes are busy)
+srun: Step created for StepId=12954283.29
+2i0d_ad_74_FMO2DFTB4H_SPE_rank19.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank19.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+2i0d_ad_74_FMO2DFTB4H_SPE_rank2.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank2.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+2i0d_ad_74_FMO2DFTB4H_SPE_rank20.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank20.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+2i0d_ad_74_FMO2DFTB4H_SPE_rank21.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank21.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+2i0d_ad_74_FMO2DFTB4H_SPE_rank22.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank22.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+2i0d_ad_74_FMO2DFTB4H_SPE_rank23.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank23.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+2i0d_ad_74_FMO2DFTB4H_SPE_rank24.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank24.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+2i0d_ad_74_FMO2DFTB4H_SPE_rank25.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank25.log
+ls: cannot access 'JOB.12954283.*': No such file or directory
+2i0d_ad_74_FMO2DFTB4H_SPE_rank26.inp
+srun --mpi=pmix -N 1 -n 32 --ntasks-per-node=32 --export=ALL --cpu-bind verbose,cores   /mnt/lustre/koa/lab/tsqc_group/installed_software/gms_mpi_noDS/gamess.00.x >& /mnt/lustre/koa/lab/tsqc_group/tsatta/lorea/fmo_1res_ligfrag/ad_74/2i0d_ad_74_FMO2DFTB4H_SPE_rank26.log
+[2026-05-12T22:05:47.012] error: *** JOB 12954283 ON cn-09-05-01 CANCELLED AT 2026-05-12T22:05:47 DUE TO TIME LIMIT ***
