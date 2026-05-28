@@ -323,10 +323,10 @@ def run_pipeline(ligand, rank, threshold, fmo_output, pieda_dir,
           f"{len(hoh_frags)} HOH + {len(lig_frags)} lig = {len(target_set)} total")
 
     # ── Output directories ───────────────────────────────────────────────────
-    tag      = f"rank{rank}"
+    tag      = f"{ligand}_rank{rank}"
     xyz_dir  = os.path.join(out_root, f"residue_xyz_{tag}")
-    mkfp_dir = os.path.join(out_root, "MAKEFP", f"inp_{tag}")
-    efp_dir  = os.path.join(out_root, "EFP-EFP", f"inp_{tag}_R{threshold}")
+    mkfp_dir = os.path.join(out_root, "MAKEFP", f"{tag}")
+    efp_dir  = os.path.join(out_root, "EFP-EFP", f"{tag}_R{threshold}")
     for d in (xyz_dir, mkfp_dir, efp_dir):
         os.makedirs(d, exist_ok=True)
 
@@ -340,8 +340,8 @@ def run_pipeline(ligand, rank, threshold, fmo_output, pieda_dir,
         fa, caps = extract_fragment(frag_idx, frag_atom_ranges, atoms, bond_cuts)
         frag_data[frag_idx] = (fa, caps)
 
-        xyz_path  = os.path.join(xyz_dir,  f"frag{frag_idx:03d}_{name}_hcap.xyz")
-        mkfp_path = os.path.join(mkfp_dir, f"frag{frag_idx:03d}_{name}_makefp.inp")
+        xyz_path  = os.path.join(xyz_dir,  f"{tag}_f{frag_idx:03d}_{name}_hcap.xyz")
+        mkfp_path = os.path.join(mkfp_dir, f"f{frag_idx:03d}_makefp_{tag}.inp")
 
         write_xyz(xyz_path, name, frag_idx, Z, fa, caps)
         write_makefp(mkfp_path, frag_idx, Z, fa, caps, makefp_template)
@@ -359,7 +359,7 @@ def run_pipeline(ligand, rank, threshold, fmo_output, pieda_dir,
             (atoms[ai-1][0], atoms[ai-1][1], atoms[ai-1][2], atoms[ai-1][3])
             for ai in sorted(all_lig_idx)
         ]
-        with open(os.path.join(xyz_dir, "ligand_full.xyz"), "w") as out:
+        with open(os.path.join(xyz_dir, f"{tag}_ligand_full.xyz"), "w") as out:
             out.write(f"{len(lig_atoms)}\n")
             out.write(f"ligand (combined)  {ligand} {tag}  Z=0\n")
             for elem, x, y, z in lig_atoms:
@@ -379,7 +379,7 @@ def run_pipeline(ligand, rank, threshold, fmo_output, pieda_dir,
     for fi, fj in sorted(pairs):
         fa_i, caps_i = frag_data[fi]
         fa_j, caps_j = frag_data[fj]
-        efp_path = os.path.join(efp_dir, f"efp_f{fi:03d}_f{fj:03d}.inp")
+        efp_path = os.path.join(efp_dir, f"f{fi:03d}_f{fj:03d}_efp_{tag}.inp")
         write_efp(efp_path, fi, fa_i, caps_i, fj, fa_j, caps_j)
 
     print(f"  EFP-EFP → {efp_dir}  ({len(pairs)} pairs)")
@@ -389,19 +389,34 @@ def run_pipeline(ligand, rank, threshold, fmo_output, pieda_dir,
 # CLI
 # ===========================================================================
 
+def get_available_ranks(ligand_dir):
+    """Return sorted list of rank numbers found in ligand_dir."""
+    inps = glob.glob(os.path.join(ligand_dir, "*rank*.inp"))
+    ranks = []
+    for f in inps:
+        m = re.search(r"rank(\d+)\.inp$", os.path.basename(f))
+        if m:
+            ranks.append(int(m.group(1)))
+    return sorted(set(ranks))
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="FMO fragment preparation pipeline",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__
     )
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("--ligand",      help="Single ligand name, e.g. ac_67")
-    group.add_argument("--all-ligands", action="store_true",
-                       help="Process all ligands found in GAMESS_logfiles/")
+    lig_group = parser.add_mutually_exclusive_group(required=True)
+    lig_group.add_argument("--ligand",      help="Single ligand name, e.g. ac_67")
+    lig_group.add_argument("--all-ligands", action="store_true",
+                           help="Process all ligands found in efmo_lig_frag_template/")
 
-    parser.add_argument("--rank",      type=int, required=True,
-                        help="Rank number to use, e.g. 11")
+    rank_group = parser.add_mutually_exclusive_group(required=True)
+    rank_group.add_argument("--rank",      type=int,
+                            help="Single rank number to use, e.g. 11")
+    rank_group.add_argument("--all-ranks", action="store_true",
+                            help="Process all ranks found for each ligand")
+
     parser.add_argument("--threshold", type=float, default=2.0,
                         help="R threshold in Angstrom (default: 2.0)")
 
@@ -413,29 +428,44 @@ def main():
 
     args = parser.parse_args()
 
+    # Resolve ligand list
     if args.all_ligands:
         ligands = sorted(
             os.path.basename(d)
             for d in glob.glob(os.path.join(args.fmo_output, "*"))
             if os.path.isdir(d)
         )
-        print(f"Found {len(ligands)} ligands: {ligands}")
+        print(f"Found {len(ligands)} ligands")
     else:
         ligands = [args.ligand]
 
+    # Resolve rank list per ligand and run
+    total = 0
     for ligand in ligands:
-        run_pipeline(
-            ligand      = ligand,
-            rank        = args.rank,
-            threshold   = args.threshold,
-            fmo_output  = args.fmo_output,
-            pieda_dir   = args.pieda_dir,
-            fragcharge_path = args.fragcharge,
-            makefp_tpl_path = args.makefp_tpl,
-            out_root    = args.out_root,
-        )
+        ligand_dir = os.path.join(args.fmo_output, ligand)
+        if args.all_ranks:
+            ranks = get_available_ranks(ligand_dir)
+            if not ranks:
+                print(f"[SKIP] No rank*.inp found in {ligand_dir}")
+                continue
+            print(f"\n{ligand}: found ranks {ranks}")
+        else:
+            ranks = [args.rank]
 
-    print("\nDone.")
+        for rank in ranks:
+            run_pipeline(
+                ligand          = ligand,
+                rank            = rank,
+                threshold       = args.threshold,
+                fmo_output      = args.fmo_output,
+                pieda_dir       = args.pieda_dir,
+                fragcharge_path = args.fragcharge,
+                makefp_tpl_path = args.makefp_tpl,
+                out_root        = args.out_root,
+            )
+            total += 1
+
+    print(f"\nDone. {total} pipeline run(s) completed.")
 
 
 if __name__ == "__main__":
