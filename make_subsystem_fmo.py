@@ -236,7 +236,7 @@ def build_subsystem(inp_file, pieda_csv, frag_charges, threshold, out_path):
     out.append("      MAXCAO=5\n")
     out.append("      MODGRD=26\n")
     out.append("      MODMUL=0\n")
-    out.append(f"      MAXBND={nbnd_new}\n")
+    out.append(f"      MAXBND={nfrag_new}\n")
     out.append(f"      NFRAG={nfrag_new}\n")
 
     MAX_COL = 72
