@@ -235,7 +235,7 @@ def write_xyz(path, name, frag_idx, Z, frag_atoms, cap_H_list):
 def write_makefp(path, frag_idx, Z, frag_atoms, cap_H_list, template):
     all_atoms = frag_atoms + [("H", *h) for h in cap_H_list]
     inp = template.replace("icharg=Z", f"icharg={Z}")
-    inp = inp.replace("fragname=fnumber", f"fragname=f{frag_idx:03d}")
+    inp = inp.replace("frag=fnumber", f"frag=f{frag_idx:03d}")
     coord_block = ""
     for elem, x, y, z in all_atoms:
         nuc = NUCLEAR.get(elem, 1.0)

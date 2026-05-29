@@ -1,9 +1,9 @@
  $contrl runtyp=makefp icharg=Z $end
  $system mwords=800 memddi=1000 $end
  $scf dirscf=.t. fdiff=.f. $end
- $basis gbasis=n311 ngauss=6 ndfunc=3 npfunc=2
-  nffunc=1 diffsp=.t. diffs=.t. $end
- $makefp fragname=fnumber disp7=.f. disp8=.f. $end
+ $basis gbasis=n31 ngauss=6 ndfunc=1 npfunc=1
+  diffsp=.t. diffs=.t. $end
+ $makefp frag=fnumber disp7=.f. disp8=.f. $end
  $data
  title
  c1
