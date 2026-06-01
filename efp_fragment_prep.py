@@ -11,8 +11,14 @@ Full pipeline for FMO fragment preparation:
 
 Usage
 -----
-Single ligand, single rank:
+Single ligand, single rank (both outputs):
     python fmo_fragment_prep.py --ligand ac_67 --rank 11
+
+MAKEFP inputs only:
+    python fmo_fragment_prep.py --ligand ac_67 --rank 11 --mode makefp
+
+EFP-EFP inputs only:
+    python fmo_fragment_prep.py --ligand ac_67 --rank 11 --mode efp
 
 All ligands, single rank:
     python fmo_fragment_prep.py --all-ligands --rank 11
@@ -274,7 +280,7 @@ def write_efp(path, fi, frag_i_atoms, frag_i_caps, fj, frag_j_atoms, frag_j_caps
 # ===========================================================================
 
 def run_pipeline(ligand, rank, threshold, fmo_output, pieda_dir,
-                 fragcharge_path, makefp_tpl_path, out_root):
+                 fragcharge_path, makefp_tpl_path, out_root, mode="all"):
 
     # ── Locate files ────────────────────────────────────────────────────────
     ligand_dir = os.path.join(fmo_output, ligand)
@@ -322,17 +328,25 @@ def run_pipeline(ligand, rank, threshold, fmo_output, pieda_dir,
     print(f"  Target fragments: {len(close_res)} residues + "
           f"{len(hoh_frags)} HOH + {len(lig_frags)} lig = {len(target_set)} total")
 
-    # ── Output directories ───────────────────────────────────────────────────
-    tag      = f"{ligand}_rank{rank}"
-    xyz_dir  = os.path.join(out_root, f"residue_xyz_{tag}")
-    mkfp_dir = os.path.join(out_root, "MAKEFP", f"{tag}")
-    efp_dir  = os.path.join(out_root, "EFP-EFP", f"{tag}_R{threshold}")
-    for d in (xyz_dir, mkfp_dir, efp_dir):
-        os.makedirs(d, exist_ok=True)
+    do_makefp = mode in ("makefp", "all")
+    do_efp    = mode in ("efp",    "all")
 
-    # ── Load MAKEFP template ────────────────────────────────────────────────
-    with open(makefp_tpl_path) as f:
-        makefp_template = f.read()
+    # ── Output directories ───────────────────────────────────────────────────
+    tag     = f"{ligand}_rank{rank}"
+    xyz_dir = os.path.join(out_root, f"residue_xyz_{tag}")
+    os.makedirs(xyz_dir, exist_ok=True)
+
+    if do_makefp:
+        mkfp_dir = os.path.join(out_root, "MAKEFP", f"inp_{tag}")
+        os.makedirs(mkfp_dir, exist_ok=True)
+    if do_efp:
+        efp_dir = os.path.join(out_root, "EFP-EFP", f"inp_{tag}_R{threshold}")
+        os.makedirs(efp_dir, exist_ok=True)
+
+    # ── Load MAKEFP template (only if needed) ──────────────────────────────
+    if do_makefp:
+        with open(makefp_tpl_path) as f:
+            makefp_template = f.read()
 
     # ── Extract, write XYZ + MAKEFP ────────────────────────────────────────
     frag_data = {}   # frag_idx -> (frag_atoms, cap_H_list)
@@ -340,14 +354,16 @@ def run_pipeline(ligand, rank, threshold, fmo_output, pieda_dir,
         fa, caps = extract_fragment(frag_idx, frag_atom_ranges, atoms, bond_cuts)
         frag_data[frag_idx] = (fa, caps)
 
-        xyz_path  = os.path.join(xyz_dir,  f"{tag}_f{frag_idx:03d}_{name}_hcap.xyz")
-        mkfp_path = os.path.join(mkfp_dir, f"f{frag_idx:03d}_makefp_{tag}.inp")
-
+        xyz_path = os.path.join(xyz_dir, f"{tag}_frag{frag_idx:03d}_{name}_hcap.xyz")
         write_xyz(xyz_path, name, frag_idx, Z, fa, caps)
-        write_makefp(mkfp_path, frag_idx, Z, fa, caps, makefp_template)
+
+        if do_makefp:
+            mkfp_path = os.path.join(mkfp_dir, f"f{frag_idx:03d}_makefp_{tag}.inp")
+            write_makefp(mkfp_path, frag_idx, Z, fa, caps, makefp_template)
 
     print(f"  XYZ    → {xyz_dir}")
-    print(f"  MAKEFP → {mkfp_dir}")
+    if do_makefp:
+        print(f"  MAKEFP → {mkfp_dir}")
 
     # ── Write ligand_full.xyz ───────────────────────────────────────────────
     if lig_frags:
@@ -366,23 +382,24 @@ def run_pipeline(ligand, rank, threshold, fmo_output, pieda_dir,
                 out.write(f"{elem:<4s}  {x:16.10f}  {y:16.10f}  {z:16.10f}\n")
 
     # ── EFP-EFP: pairs from PIEDA CSV with R < threshold ───────────────────
-    our_set = set(frag_data.keys())
-    pairs   = set()
-    with open(pieda_csv) as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            fi = int(row["frag_I"])
-            fj = int(row["frag_J"])
-            if float(row["R"]) < threshold and fi in our_set and fj in our_set:
-                pairs.add((min(fi, fj), max(fi, fj)))
+    if do_efp:
+        our_set = set(frag_data.keys())
+        pairs   = set()
+        with open(pieda_csv) as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                fi = int(row["frag_I"])
+                fj = int(row["frag_J"])
+                if float(row["R"]) < threshold and fi in our_set and fj in our_set:
+                    pairs.add((min(fi, fj), max(fi, fj)))
 
-    for fi, fj in sorted(pairs):
-        fa_i, caps_i = frag_data[fi]
-        fa_j, caps_j = frag_data[fj]
-        efp_path = os.path.join(efp_dir, f"f{fi:03d}_f{fj:03d}_efp_{tag}.inp")
-        write_efp(efp_path, fi, fa_i, caps_i, fj, fa_j, caps_j)
+        for fi, fj in sorted(pairs):
+            fa_i, caps_i = frag_data[fi]
+            fa_j, caps_j = frag_data[fj]
+            efp_path = os.path.join(efp_dir, f"f{fi:03d}_f{fj:03d}_efp_{tag}.inp")
+            write_efp(efp_path, fi, fa_i, caps_i, fj, fa_j, caps_j)
 
-    print(f"  EFP-EFP → {efp_dir}  ({len(pairs)} pairs)")
+        print(f"  EFP-EFP → {efp_dir}  ({len(pairs)} pairs)")
 
 
 # ===========================================================================
@@ -419,6 +436,8 @@ def main():
 
     parser.add_argument("--threshold", type=float, default=2.0,
                         help="R threshold in Angstrom (default: 2.0)")
+    parser.add_argument("--mode", choices=("makefp", "efp", "all"), default="all",
+                        help="Output to prepare: 'makefp', 'efp', or 'all' (default: all)")
 
     parser.add_argument("--fmo-output",  default=FMO_OUTPUT)
     parser.add_argument("--pieda-dir",   default=PIEDA_DIR)
@@ -462,6 +481,7 @@ def main():
                 fragcharge_path = args.fragcharge,
                 makefp_tpl_path = args.makefp_tpl,
                 out_root        = args.out_root,
+                mode            = args.mode,
             )
             total += 1
 
