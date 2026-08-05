@@ -20,9 +20,11 @@ Starting structures are PLQMVM2_FMO_OPT
 
 ----
 2. Folder description
+   - From_PLQMVM2_paper: info from plqm-vm2 paper, including probabilities, coords.
    - PLQMVM2_FMO_OPT_PPE: contains the probability of all complexes
    - dftb_pieda_lig_frag: FMO/DFTB PIEDA log files. Ligands are fragmented.
    - dftb_pieda_no_lig_frag: FMO/DFTB PIEDA inp files. Using full ligands (no fragmentation)
    - lig_fmo_template: free ligands with fragmentation
    - efmo_lig_frag_template: efmo inputs for pieda
+   - scripts: contains all script files
 ----
